@@ -863,7 +863,7 @@ for _, strategy in helpers.each_strategy() do
       end)
 
 
-      it("executes a global log plugin on Nginx-produced client errors (HTTP 400)", function()
+      it("executes a global log plugin on Nginx-produced client errors (HTTP 494)", function()
         -- triggers error_page directive
         local uuid = utils.uuid()
 
@@ -876,7 +876,7 @@ for _, strategy in helpers.each_strategy() do
             ["X-UUID"] = uuid,
           }
         })
-        assert.res_status(400, res)
+        assert.res_status(494, res)
 
         -- close and reopen to flush the request
         proxy_client:close()
@@ -893,11 +893,11 @@ for _, strategy in helpers.each_strategy() do
         local log = pl_file.read(FILE_LOG_PATH)
         local log_message = cjson.decode(pl_stringx.strip(log):match("%b{}"))
 
-        assert.equal(400, log_message.response.status)
+        assert.equal(494, log_message.response.status)
       end)
 
 
-      it("log plugins sees same request in error_page handler (HTTP 400)", function()
+      it("log plugins sees same request in error_page handler (HTTP 494)", function()
         -- triggers error_page directive
         local uuid = utils.uuid()
 
@@ -915,7 +915,7 @@ for _, strategy in helpers.each_strategy() do
           }
           --]]
         })
-        assert.res_status(400, res)
+        assert.res_status(494, res)
 
         -- close and reopen to flush the request
         proxy_client:close()
